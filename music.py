@@ -5,7 +5,7 @@
 import re
 import asyncio
 
-from config import ASSISTANT_NAME, BOT_USERNAME, IMG_1, IMG_2
+from config import ASSISTANT_NAME, UPDATES_CHANNEL, ALIVE_NAME, OWNER_NAME, BOT_USERNAME, IMG_1, IMG_2
 from driver.filters import command, other_filters
 from driver.queues import QUEUE, add_to_queue
 from driver.amort import call_py, user
@@ -50,15 +50,20 @@ async def ytdl(link):
         return 0, stderr.decode()
 
 
-@Client.on_message(command(["mplay", f"mplay@{BOT_USERNAME}"]) & other_filters)
+@Client.on_message(command(["mplay","شغيل","شغيل اغنيه","play", f"mplay@{BOT_USERNAME}"]) & other_filters)
 async def play(c: Client, m: Message):
     replied = m.reply_to_message
     chat_id = m.chat.id
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton(text="• القائمة", callback_data="cbmenu"),
-                InlineKeyboardButton(text="• إغلاق", callback_data="cls"),
+                InlineKeyboardButton(text="●↯التـحـكــم↯●", callback_data="cbmenu"),
+                InlineKeyboardButton(text="🗑اغــلاق●", callback_data="cls"),
+                ],
+              [InlineKeyboardButton(ALIVE_NAME, url=f"t.me/{OWNER_NAME}"),
+              InlineKeyboardButton("-  𝙎𝙊𝙐𝙍𝘾𝙀 𝙎𝙉𝘼𝙆", url=f"t.me/{UPDATES_CHANNEL}"),
+                ],
+              [InlineKeyboardButton("🎧اضافه البوت اللي مجموعتك🎧", url=f"http://t.me/{BOT_USERNAME}?startgroup=new"),              
             ]
         ]
     )
@@ -116,7 +121,7 @@ async def play(c: Client, m: Message):
 
     if replied:
         if replied.audio or replied.voice:
-            suhu = await replied.reply("📥 **جاري تنزيل الصوت...**")
+            suhu = await replied.reply("📥 **الحساب المساعد منضم بلفعل وجاري تنزيل الصوت...**")
             dl = await replied.download()
             link = replied.link
             if replied.audio:
@@ -207,7 +212,7 @@ async def play(c: Client, m: Message):
                                 )
                             except Exception as ep:
                                 await suhu.delete()
-                                await m.reply_text(f"خطاء: `{ep}`")
+                                await m.reply_text(f"خطاء قام احد مشرفي المجموعه بحظر الحساب المساعد برجاء رفع الحظر لكي اعمل @{ASSISTANT_NAME} : `{ep}`")
 
     else:
         if len(m.command) < 2:
@@ -258,20 +263,25 @@ async def play(c: Client, m: Message):
                             )
                         except Exception as ep:
                             await suhu.delete()
-                            await m.reply_text(f"خطاء: `{ep}`")
+                            await m.reply_text(f"خطاء قام احد مشرفي المجموعه بحظر الحساب المساعد برجاء رفع الحظر عنه لكي اعمل @{ASSISTANT_NAME} : `{ep}`")
 
 
 # stream is used for live streaming only
 
 
-@Client.on_message(command(["stream", f"stream@{BOT_USERNAME}"]) & other_filters)
+@Client.on_message(command(["stream","play","شغيل", f"stream@{BOT_USERNAME}"]) & other_filters)
 async def stream(c: Client, m: Message):
     chat_id = m.chat.id
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton(text="• القائمة", callback_data="cbmenu"),
-                InlineKeyboardButton(text="• اغلاق", callback_data="cls"),
+                InlineKeyboardButton(text="●↯التـحـكــم↯●", callback_data="cbmenu"),
+                InlineKeyboardButton(text="🗑اغــلاق●", callback_data="cls"),
+              ],
+              [InlineKeyboardButton(ALIVE_NAME, url=f"t.me/{OWNER_NAME}"),
+              InlineKeyboardButton("-  𝙎𝙊𝙐𝙍𝘾𝙀 𝙎𝙉𝘼𝙆", url=f"t.me/{UPDATES_CHANNEL}"),
+                ],
+              [InlineKeyboardButton("🎧اضافه البوت اللي مجموعتك🎧", url=f"http://t.me/{BOT_USERNAME}?startgroup=new"),               
             ]
         ]
     )
@@ -375,4 +385,4 @@ async def stream(c: Client, m: Message):
                     )
                 except Exception as ep:
                     await suhu.delete()
-                    await m.reply_text(f"خطاء: `{ep}`")
+                    await m.reply_text(f"خطاء قام احد مشرفي المجموعه بحظر الحساب المساعد برجاء رفع الحظر لكي اعمل @{ASSISTANT_NAME} : `{ep}`")
